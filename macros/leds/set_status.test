@@ -1,0 +1,63 @@
+[gcode_macro _led_vars]
+variable_colors: {
+        'blue': {'r': 0.0, 'g': 0.02, 'b': 0.5, 'w': 0.0},
+        'orange': {'r': 0.8, 'g': 0.0, 'b': 0.35, 'w': 0.0},
+        'yellow': {'r': 0.3, 'g': 0.18, 'b': 0.0, 'w': 0.0},
+        'cyan': {'r': 0.0, 'g': 0.6, 'b': 0.2, 'w': 0.0},
+        'purple': {'r': 0.5, 'g': 0.1, 'b': 0.4, 'w': 0.0},
+        'green': {'r': 0.2, 'g': 1.0, 'b': 0.0, 'w': 0.0},
+        'black': {'r': 0.0, 'g': 0.0, 'b': 0.0, 'w': 0.0},
+        'red': {'r': 1.0, 'g': 0.0, 'b': 0.0, 'w': 0.0},
+        'theme': {'r': 0.25, 'g': 0.41, 'b': 0.88, 'w':0.0},
+        'white': {'r': 0.8, 'g': 0.8, 'b': 0.8, 'w':1.0},
+    }
+variable_leds: {
+        'logo': {'name': "sb_leds", 'idx': "1", 'enabled': True},
+        'nozzle': {'name': "sb_leds", 'idx': "2,3", 'enabled': True},
+        'knob': {'name': "btt_mini12864", 'idx': "1,2", 'enabled': True},
+        'screen': {'name': "btt_mini12864", 'idx': "3", 'enabled': True},
+    }
+gcode:
+  #keep
+
+[gcode_macro _set_leds_by_name]
+gcode:
+    {% set led = printer["gcode_macro _led_vars"].leds[params.LEDS] %}
+    {% set color = printer["gcode_macro _led_vars"].colors[params.COLOR] if led.enabled else printer["gcode_macro _led_vars"].colors["off"] %}
+    {% set transmit_last = params.TRANSMIT|default(1) %}
+
+    {% for led_index in led.idx.split(',') %}
+        {% set transmit=transmit_last if loop.last else 0 %}
+        set_led led={led.name} red={color.r} green={color.g} blue={color.b} white={color.w} index={led_index} transmit={transmit}
+    {% endfor %}
+
+[gcode_macro _disable_leds]
+gcode:
+    SET_GCODE_VARIABLE MACRO=_led_vars VARIABLE=leds[params.LEDS].enabled VALUE=False
+    SET_STATUS
+
+[gcode_macro _enable_leds]
+gcode:
+    SET_GCODE_VARIABLE MACRO=_led_vars VARIABLE=leds[params.LEDS].enabled VALUE=True
+    SET_STATUS
+
+[gcode_macro set_status]
+variable_statuses: {
+        'busy': {'state': "red", 'nozzle': "white", 'screen': "theme"},
+        'cleaning': {'state': "blue", 'nozzle': "white", 'screen': "theme"},
+        'heating': {'state': "orange", 'nozzle': "white", 'screen': "theme"},
+        'homing': {'state': "cyan", 'nozzle': "white", 'screen': "theme"},
+        'leveling': {'state': "purple", 'nozzle': "white", 'screen': "theme"},
+        'meshing': {'state': "green", 'nozzle': "white", 'screen': "theme"},
+        'off': {'state': "black", 'nozzle': "black", 'screen': "black"},
+        'printing': {'state': "red", 'nozzle': "white", 'screen': "theme"},
+        'ready': {'state': "theme", 'nozzle': "theme", 'screen': "theme"},
+    }
+variable_current: ""
+gcode:
+    {% set status = params.STATUS|default(current) %}
+    SET_GCODE_VARIABLE MACRO=set_status VARIABLE=current VALUE="{status}"
+    _set_leds_by_name leds="logo" color="{statuses[status].state}"
+    _set_leds_by_name leds="nozzle" color="{statuses[status].nozzle}"
+    _set_leds_by_name leds="knob" color="{statuses[status].state}"
+    _set_leds_by_name leds="screen" color="{statuses[status].screen}"
