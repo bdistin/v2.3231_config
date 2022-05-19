@@ -23,6 +23,8 @@ trusted_clients =
 	192.168.0.0/16
 	FE80::/10
 	::1/128
+	127.0.0.1
+force_logins = False
 
 [octoprint_compat]
 
