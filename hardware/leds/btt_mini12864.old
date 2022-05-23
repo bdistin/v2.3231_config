@@ -1,6 +1,0 @@
-
-[neopixel btt_mini12864]
-#  To control Neopixel RGB in mini12864 display
-pin: EXP1_6
-chain_count: 3
-color_order: RGB

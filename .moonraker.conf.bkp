@@ -31,7 +31,8 @@ force_logins = False
 [history]
 
 [update_manager]
-refresh_interval = 168
+enable_auto_refresh = True
+refresh_interval = 24
 
 [update_manager mainsail]
 type = web
