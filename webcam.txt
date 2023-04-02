@@ -1,3 +1,0 @@
-camera="usb"
-camera_usb_options="-r 1980x1080 -f 30 -d /dev/v4l/by-id/usb-046d_HD_Pro_Webcam_C920_A24AAA9F-video-index0"
-camera_http_options="-n -p 8080"
