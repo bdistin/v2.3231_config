@@ -1,6 +1,6 @@
 #!/bin/bash
 
-filename="~/klipper/klippy/configfile.py"
+filename="/home/pi/klipper/klippy/configfile.py"
 search="glob\.glob\(include_glob\)"
 replace="glob.glob(include_glob, recursive=True)"
 
