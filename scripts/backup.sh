@@ -51,6 +51,7 @@ grab_version(){
 
 push_config(){
   cd $config_folder
+  git config pull.rebase true
   git pull
   git add .
   current_date=$(date +"%Y-%m-%d %T")
