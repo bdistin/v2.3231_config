@@ -58,3 +58,9 @@ origin = https://github.com/Arksine/CanBoot.git
 path = ~/CanBoot
 is_system_service = False
 
+[update_manager led_effect]
+type = git_repo
+path = ~/klipper-led_effect
+origin = https://github.com/julianschill/klipper-led_effect.git
+is_system_service = False
+
