@@ -45,13 +45,6 @@ env = ~/.KlipperScreen-env/bin/python
 requirements = scripts/KlipperScreen-requirements.txt
 install_script = scripts/KlipperScreen-install.sh
 
-[update_manager ercf-happy_hare]
-type = git_repo
-path = ~/ERCF-Software-V3
-origin = https://github.com/moggieuk/ERCF-Software-V3.git
-install_script = install.sh
-managed_services = klipper
-
 [update_manager CanBoot]
 type = git_repo
 origin = https://github.com/Arksine/CanBoot.git
@@ -71,4 +64,15 @@ origin = https://github.com/sanaahamel/nevermore-controller.git
 primary_branch = main
 is_system_service = False
 managed_services = klipper
+
+[update_manager happy-hare]
+type = git_repo
+path = ~/Happy-Hare
+origin = https://github.com/moggieuk/Happy-Hare.git
+primary_branch = main
+install_script = install.sh
+managed_services = klipper
+
+[mmu_server]
+enable_file_preprocessor = False
 
