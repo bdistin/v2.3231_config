@@ -1,0 +1,4 @@
+[output_pin nevermore_power]
+pin: FAN4
+pwm: False
+static_value: 1

@@ -64,3 +64,11 @@ path = ~/klipper-led_effect
 origin = https://github.com/julianschill/klipper-led_effect.git
 is_system_service = False
 
+[update_manager nevermore]
+type = git_repo
+path = ~/nevermore-controller
+origin = https://github.com/sanaahamel/nevermore-controller.git
+primary_branch = main
+is_system_service = False
+managed_services = klipper
+
