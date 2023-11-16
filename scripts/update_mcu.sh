@@ -1,11 +1,9 @@
 sudo service klipper stop
 
 cd ~/klipper
-git stash -a
-git pull
-git stash pop
+git pull --autostash
 
-# cp -f ~/print_data/config/scripts/{config.octopus,config.sb2040,config.rpi} ~/klipper/
+cp -f ~/printer_data/config/scripts/{config.octopus,config.sb2040,config.rpi} ~/klipper/
 
 make clean KCONFIG_CONFIG=config.octopus
 make menuconfig KCONFIG_CONFIG=config.octopus
@@ -37,6 +35,6 @@ cd ~/klipper
 make flash KCONFIG_CONFIG=config.rpi
 read -p "RPi firmware flashed, please check above for any errors. Press [Enter] to finish up, or [Ctrl+C] to abort"
 
-# cp -f ~/klipper/{config.octopus,config.sb2040,config.rpi} ~/print_data/config/scripts/
+cp -f ~/klipper/{config.octopus,config.sb2040,config.rpi} ~/printer_data/config/scripts/
 
 sudo service klipper start
