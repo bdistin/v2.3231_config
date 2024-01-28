@@ -5,7 +5,7 @@
 #       (If no address is provided then the system must spend extra time
 #        verifying that there's only one nearby Nevermore.)
 # example - `bt_address: 43:43:A2:12:1F:AC`
-#bt_address: <optional, omitted by default>
+bt_address: 28:CD:C1:0B:17:8C
 
 # seconds, 0 to disable, how long to wait before reporting that the Nevermore is missing.
 # If disabled (set to 0) the module will keep trying to connect in the background.
@@ -18,7 +18,7 @@
 #           This varies on a few factors outside of your control, so the system
 #           will reject unfeasibly small timeout values to keep you from screwing
 #           yourself over.
-#connection_initial_timeout: <default varies based on whether `bt_address` is set>
+connection_initial_timeout: 60
 
 # LED
 # For the optional LED ring feature.
