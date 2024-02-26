@@ -57,7 +57,7 @@ sudo service klipper stop
 cd $klipper_folder
 git pull --autostash
 
-for current in ${mcu@}; do
+for current in ${!mcu}; do
   cp -f "${config_folder}/config.${current[type]}" $klipper_folder
 
   read -p "${current[type]} firmware built, please check above for any errors. Press [Enter] to continue flashing, or [Ctrl+C] to abort"
