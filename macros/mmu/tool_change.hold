@@ -1,0 +1,51 @@
+###########################################################################
+# Tool change macros
+# This is automatically created on installation but you can increase
+# or reduce this list to match your number of tools in operation
+#
+[gcode_macro T0]
+gcode: MMU_CHANGE_TOOL TOOL=0
+[gcode_macro T1]
+gcode: MMU_CHANGE_TOOL TOOL=1
+[gcode_macro T2]
+gcode: MMU_CHANGE_TOOL TOOL=2
+[gcode_macro T3]
+gcode: MMU_CHANGE_TOOL TOOL=3
+[gcode_macro T4]
+gcode: MMU_CHANGE_TOOL TOOL=4
+[gcode_macro T5]
+gcode: MMU_CHANGE_TOOL TOOL=5
+[gcode_macro T6]
+gcode: MMU_CHANGE_TOOL TOOL=6
+[gcode_macro T7]
+gcode: MMU_CHANGE_TOOL TOOL=7
+[gcode_macro T8]
+gcode: MMU_CHANGE_TOOL TOOL=8
+[gcode_macro T9]
+gcode: MMU_CHANGE_TOOL TOOL=9
+[gcode_macro T10]
+gcode: MMU_CHANGE_TOOL TOOL=10
+[gcode_macro T11]
+gcode: MMU_CHANGE_TOOL TOOL=11
+[gcode_macro T12]
+gcode: MMU_CHANGE_TOOL TOOL=12
+[gcode_macro T13]
+gcode: MMU_CHANGE_TOOL TOOL=13
+[gcode_macro T14]
+gcode: MMU_CHANGE_TOOL TOOL=14
+[gcode_macro T15]
+gcode: MMU_CHANGE_TOOL TOOL=15
+[gcode_macro T16]
+gcode: MMU_CHANGE_TOOL TOOL=16
+[gcode_macro T17]
+gcode: MMU_CHANGE_TOOL TOOL=17
+[gcode_macro T18]
+gcode: MMU_CHANGE_TOOL TOOL=18
+[gcode_macro T19]
+gcode: MMU_CHANGE_TOOL TOOL=19
+[gcode_macro T20]
+gcode: MMU_CHANGE_TOOL TOOL=20
+[gcode_macro T21]
+gcode: MMU_CHANGE_TOOL TOOL=21
+[gcode_macro T22]
+gcode: MMU_CHANGE_TOOL TOOL=22
