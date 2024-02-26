@@ -58,13 +58,13 @@ cd $klipper_folder
 git pull --autostash
 
 for mcu in ${!mcu@}; do
-  cp -f "${config_folder}/config.${mcu.type}" $klipper_folder
+  cp -f "${config_folder}/config\.${mcu.type}" $klipper_folder
 
-  make clean KCONFIG_CONFIG="config.${mcu.type}"
-  make menuconfig KCONFIG_CONFIG="config.${mcu.type}"
+  make clean KCONFIG_CONFIG="config\.${mcu.type}"
+  make menuconfig KCONFIG_CONFIG="config\.${mcu.type}"
 
   if [[ -n "${mcu.can_address}" ]]; then
-    make KCONFIG_CONFIG=config.${mcu.type}
+    make KCONFIG_CONFIG=config\.${mcu.type}
     mv "${klipper_folder}/out/klipper.bin" ${mcu.type}/${mcu.type}_klipper.bin
 
     read -p "${mcu.type} firmware built, please check above for any errors. Press [Enter] to continue flashing, or [Ctrl+C] to abort"
@@ -79,17 +79,17 @@ for mcu in ${!mcu@}; do
 
     read -p "${mcu.type} firmware flashed, please check above for any errors. Press [Enter] to continue building, or [Ctrl+C] to abort"
   elif [[ "${mcu.type}" == "rpi" ]]; then
-    make flash KCONFIG_CONFIG="config.${mcu.type}"
+    make flash KCONFIG_CONFIG="config\.${mcu.type}"
 
     read -p "${mcu.type} firmware flashed, please check above for any errors. Press [Enter] to continue building, or [Ctrl+C] to abort"
   else
-    make KCONFIG_CONFIG="config.${mcu.type}"
+    make KCONFIG_CONFIG="config\.${mcu.type}"
     mv "${klipper_folder}/out/klipper.bin" ${firmware_folder}/${mcu.type}_klipper.bin
 
     read -p "${mcu.type} firmware built, please check above for any errors. Firmware is stored here: ${firmware_folder}/${mcu.type}_klipper.bin and you will need to install it per your board type manually. Press [Enter] to continue, or [Ctrl+C] to abort"
   fi
 
-  cp -f "${klipper_folder}/config.${mcu.type}" $config_folder
+  cp -f "${klipper_folder}/config\.${mcu.type}" $config_folder
 done
 
 sudo service klipper start
