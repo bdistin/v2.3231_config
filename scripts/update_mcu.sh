@@ -59,8 +59,10 @@ git pull --autostash
 
 for mcu in ${!mcu@}; do
   cp -f "${config_folder}/config.${mcu[type]}" $klipper_folder
+
   echo "---"
-  read -p "Preparing to build klipper for ${mcu[type]}. Need to open menuconfig, quit, and save to get latest options. Press [Enter] to continue, or [Ctrl+C] to abort"
+  echo "Preparing to build klipper for ${mcu[type]}. Need to open menuconfig, quit, and save to get latest options."
+  read -p "Press [Enter] to continue, or [Ctrl+C] to abort"
 
   make clean KCONFIG_CONFIG="config.${mcu[type]}"
   make menuconfig KCONFIG_CONFIG="config.${mcu[type]}"
@@ -69,26 +71,31 @@ for mcu in ${!mcu@}; do
     make KCONFIG_CONFIG="config.${mcu[type]}"
     mv "$(klipper_folder)/out/klipper.bin" ${mcu[type]}/${mcu[type]}_klipper.bin
 
-    read -p "${mcu[type]} firmware built, please check above for any errors. Press [Enter] to continue flashing, or [Ctrl+C] to abort"
+    echo "${mcu[type]} firmware built, please check above for any errors."
+    read -p "Press [Enter] to continue flashing, or [Ctrl+C] to abort"
 
     python3 "$(katapult_folder)/scripts/flash_can.py" -i can0 -u "${mcu[can_address]}" -f "$(firmware_folder)/${mcu[type]}_klipper.bin"
 
     if [[ -n "${mcu[usb_address]}" ]]; then
-      read -p "We intentionally caused an error on the ${mcu[type]} to boot into the bootloader. Please ignore and Press [Enter] to continue flashing, or [Ctrl+C] to abort"
+      echo "We intentionally caused an error on the ${mcu[type]} to boot into the bootloader."
+      read -p "Please ignore the errors and Press [Enter] to continue flashing, or [Ctrl+C] to abort"
 
       python3 "$(katapult_folder)/scripts/flash_can.py" -d "/dev/serial/by-id/${mcu[usb_address]}" -f "$(firmware_folder)/${mcu[type]}_klipper.bin"
     fi
 
-    read -p "${mcu[type]} firmware flashed, please check above for any errors. Press [Enter] to continue building, or [Ctrl+C] to abort"
+    echo "${mcu[type]} firmware flashed, please check above for any errors."
+    read -p "Press [Enter] to continue building, or [Ctrl+C] to abort"
   elif [[ "${mcu[type]}" == "rpi" ]]; then
     make flash KCONFIG_CONFIG="config.${mcu[type]}"
 
-    read -p "${mcu[type]} firmware flashed, please check above for any errors. Press [Enter] to continue building, or [Ctrl+C] to abort"
+    echo "${mcu[type]} firmware flashed, please check above for any errors."
+    read -p "Press [Enter] to continue building, or [Ctrl+C] to abort"
   else
     make KCONFIG_CONFIG="config.${mcu[type]}"
     mv "$(klipper_folder)/out/klipper.bin" $(firmware_folder)/${mcu[type]}_klipper.bin
 
-    read -p "${mcu[type]} firmware built, please check above for any errors. Firmware is stored here: $(firmware_folder)/${mcu[type]}_klipper.bin and you will need to install it per your board type manually. Press [Enter] to continue, or [Ctrl+C] to abort"
+    echo "${mcu[type]} firmware built, please check above for any errors. Firmware is stored here: $(firmware_folder)/${mcu[type]}_klipper.bin and you will need to install it per your board type manually."
+    read -p "Press [Enter] to continue, or [Ctrl+C] to abort"
   fi
 
   cp -f "$(klipper_folder)/config.${mcu[type]}" $config_folder
