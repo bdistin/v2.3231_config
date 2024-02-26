@@ -64,7 +64,7 @@ for mcu in ${!mcu@}; do
   make menuconfig KCONFIG_CONFIG="config\.${mcu.type}"
 
   if [[ -n "${mcu.can_address}" ]]; then
-    make KCONFIG_CONFIG=config\.${mcu.type}
+    make KCONFIG_CONFIG="config.${mcu.type}"
     mv "${klipper_folder}/out/klipper.bin" ${mcu.type}/${mcu.type}_klipper.bin
 
     read -p "${mcu.type} firmware built, please check above for any errors. Press [Enter] to continue flashing, or [Ctrl+C] to abort"
