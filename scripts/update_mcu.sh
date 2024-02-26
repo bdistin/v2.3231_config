@@ -57,41 +57,41 @@ sudo service klipper stop
 cd $klipper_folder
 git pull --autostash
 
-for current in ${!mcu}; do
-  cp -f "${config_folder}/config.${current[type]}" $klipper_folder
+for mcu in ${!mcu@}; do
+  cp -f "${config_folder}/config.${mcu[type]}" $klipper_folder
+  echo "---"
+  read -p "Preparing to build klipper for ${mcu[type]}. Need to open menuconfig, quit, and save to get latest options. Press [Enter] to continue, or [Ctrl+C] to abort"
 
-  read -p "${current[type]} firmware built, please check above for any errors. Press [Enter] to continue flashing, or [Ctrl+C] to abort"
+  make clean KCONFIG_CONFIG="config.${mcu[type]}"
+  make menuconfig KCONFIG_CONFIG="config.${mcu[type]}"
 
-  make clean KCONFIG_CONFIG="config.${current[type]}"
-  make menuconfig KCONFIG_CONFIG="config.${current[type]}"
+  if [[ -n "${mcu[can_address]}" ]]; then
+    make KCONFIG_CONFIG="config.${mcu[type]}"
+    mv "$(klipper_folder)/out/klipper.bin" ${mcu[type]}/${mcu[type]}_klipper.bin
 
-  if [[ -n "${current[can_address]}" ]]; then
-    make KCONFIG_CONFIG="config.${current[type]}"
-    mv "$(klipper_folder)/out/klipper.bin" ${current[type]}/${current[type]}_klipper.bin
+    read -p "${mcu[type]} firmware built, please check above for any errors. Press [Enter] to continue flashing, or [Ctrl+C] to abort"
 
-    read -p "${current[type]} firmware built, please check above for any errors. Press [Enter] to continue flashing, or [Ctrl+C] to abort"
+    python3 "$(katapult_folder)/scripts/flash_can.py" -i can0 -u "${mcu[can_address]}" -f "$(firmware_folder)/${mcu[type]}_klipper.bin"
 
-    python3 "$(katapult_folder)/scripts/flash_can.py" -i can0 -u "${current[can_address]}" -f "$(firmware_folder)/${current[type]}_klipper.bin"
+    if [[ -n "${mcu[usb_address]}" ]]; then
+      read -p "We intentionally caused an error on the ${mcu[type]} to boot into the bootloader. Please ignore and Press [Enter] to continue flashing, or [Ctrl+C] to abort"
 
-    if [[ -n "${current[usb_address]}" ]]; then
-      read -p "We intentionally caused an error on the ${current[type]} to boot into the bootloader. Please ignore and Press [Enter] to continue flashing, or [Ctrl+C] to abort"
-
-      python3 "$(katapult_folder)/scripts/flash_can.py" -d "/dev/serial/by-id/${current[usb_address]}" -f "$(firmware_folder)/${current[type]}_klipper.bin"
+      python3 "$(katapult_folder)/scripts/flash_can.py" -d "/dev/serial/by-id/${mcu[usb_address]}" -f "$(firmware_folder)/${mcu[type]}_klipper.bin"
     fi
 
-    read -p "${current[type]} firmware flashed, please check above for any errors. Press [Enter] to continue building, or [Ctrl+C] to abort"
-  elif [[ "${current[type]}" == "rpi" ]]; then
-    make flash KCONFIG_CONFIG="config.${current[type]}"
+    read -p "${mcu[type]} firmware flashed, please check above for any errors. Press [Enter] to continue building, or [Ctrl+C] to abort"
+  elif [[ "${mcu[type]}" == "rpi" ]]; then
+    make flash KCONFIG_CONFIG="config.${mcu[type]}"
 
-    read -p "${current[type]} firmware flashed, please check above for any errors. Press [Enter] to continue building, or [Ctrl+C] to abort"
+    read -p "${mcu[type]} firmware flashed, please check above for any errors. Press [Enter] to continue building, or [Ctrl+C] to abort"
   else
-    make KCONFIG_CONFIG="config.${current[type]}"
-    mv "$(klipper_folder)/out/klipper.bin" $(firmware_folder)/${current[type]}_klipper.bin
+    make KCONFIG_CONFIG="config.${mcu[type]}"
+    mv "$(klipper_folder)/out/klipper.bin" $(firmware_folder)/${mcu[type]}_klipper.bin
 
-    read -p "${current[type]} firmware built, please check above for any errors. Firmware is stored here: $(firmware_folder)/${current[type]}_klipper.bin and you will need to install it per your board type manually. Press [Enter] to continue, or [Ctrl+C] to abort"
+    read -p "${mcu[type]} firmware built, please check above for any errors. Firmware is stored here: $(firmware_folder)/${mcu[type]}_klipper.bin and you will need to install it per your board type manually. Press [Enter] to continue, or [Ctrl+C] to abort"
   fi
 
-  cp -f "$(klipper_folder)/config.${current[type]}" $config_folder
+  cp -f "$(klipper_folder)/config.${mcu[type]}" $config_folder
 done
 
 sudo service klipper start
