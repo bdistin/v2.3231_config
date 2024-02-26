@@ -37,18 +37,10 @@ type = web
 repo = mainsail-crew/mainsail
 path = ~/mainsail
 
-[update_manager KlipperScreen]
+[update_manager katapult]
 type = git_repo
-path = ~/KlipperScreen
-origin = https://github.com/jordanruthe/KlipperScreen.git
-env = ~/.KlipperScreen-env/bin/python
-requirements = scripts/KlipperScreen-requirements.txt
-install_script = scripts/KlipperScreen-install.sh
-
-[update_manager CanBoot]
-type = git_repo
-origin = https://github.com/Arksine/CanBoot.git
-path = ~/CanBoot
+origin = https://github.com/Arksine/katapult.git
+path = ~/katapult
 is_system_service = False
 
 [update_manager led_effect]
