@@ -39,7 +39,7 @@ declare -A mcu1=(
 declare -A mcu2=(
     [type]='kraken'
     [can_address]='5cbcb7c7dc7f'
-    [usb_address]='usb-CanBoot_stm32f446xx_4A0021000651303431333234-if00'
+    [usb_address]='usb-katapult_stm32h723xx_25001D001551313338343730-if00'
 )
 
 declare -A mcu3=(
