@@ -58,7 +58,7 @@ cd $klipper_folder
 git pull --autostash
 
 for mcu in ${!mcu@}; do
-  cp -f "${config_folder}/config.${mcu[type]}" $klipper_folder
+  cp -f $config_folder/config.${mcu[type]} $klipper_folder
 
   echo "---"
   echo "Preparing to build klipper for ${mcu[type]}. Need to open menuconfig, quit, and save to get latest options."
@@ -67,20 +67,20 @@ for mcu in ${!mcu@}; do
   make clean KCONFIG_CONFIG="config.${mcu[type]}"
   make menuconfig KCONFIG_CONFIG="config.${mcu[type]}"
 
-  if [[ -n "${mcu[can_address]}" ]]; then
+  if [[ -n ${mcu[can_address]} ]]; then
     make KCONFIG_CONFIG="config.${mcu[type]}"
-    mv "$(klipper_folder)/out/klipper.bin" ${mcu[type]}/${mcu[type]}_klipper.bin
+    mv $klipper_folder/out/klipper.bin $firmware_folder/${mcu[type]}_klipper.bin
 
     echo "${mcu[type]} firmware built, please check above for any errors."
     read -p "Press [Enter] to continue flashing, or [Ctrl+C] to abort"
 
-    python3 "$(katapult_folder)/scripts/flash_can.py" -i can0 -u "${mcu[can_address]}" -f "$(firmware_folder)/${mcu[type]}_klipper.bin"
+    python3 $katapult_folder/scripts/flash_can.py -i can0 -u ${mcu[can_address]} -f $firmware_folder/${mcu[type]}_klipper.bin
 
-    if [[ -n "${mcu[usb_address]}" ]]; then
+    if [[ -n ${mcu[usb_address]} ]]; then
       echo "We intentionally caused an error on the ${mcu[type]} to boot into the bootloader."
       read -p "Please ignore the errors and Press [Enter] to continue flashing, or [Ctrl+C] to abort"
 
-      python3 "$(katapult_folder)/scripts/flash_can.py" -d "/dev/serial/by-id/${mcu[usb_address]}" -f "$(firmware_folder)/${mcu[type]}_klipper.bin"
+      python3 $katapult_folder/scripts/flash_can.py -d /dev/serial/by-id/${mcu[usb_address]} -f $firmware_folder/${mcu[type]}_klipper.bin
     fi
 
     echo "${mcu[type]} firmware flashed, please check above for any errors."
@@ -92,13 +92,13 @@ for mcu in ${!mcu@}; do
     read -p "Press [Enter] to continue building, or [Ctrl+C] to abort"
   else
     make KCONFIG_CONFIG="config.${mcu[type]}"
-    mv "$(klipper_folder)/out/klipper.bin" $(firmware_folder)/${mcu[type]}_klipper.bin
+    mv $klipper_folder/out/klipper.bin $firmware_folder/${mcu[type]}_klipper.bin
 
-    echo "${mcu[type]} firmware built, please check above for any errors. Firmware is stored here: $(firmware_folder)/${mcu[type]}_klipper.bin and you will need to install it per your board type manually."
+    echo "${mcu[type]} firmware built, please check above for any errors. Firmware is stored here: ${firmware_folder}/${mcu[type]}_klipper.bin and you will need to install it per your board type manually."
     read -p "Press [Enter] to continue, or [Ctrl+C] to abort"
   fi
 
-  cp -f "$(klipper_folder)/config.${mcu[type]}" $config_folder
+  cp -f $klipper_folder/config.${mcu[type]} $config_folder
 done
 
 sudo service klipper start
