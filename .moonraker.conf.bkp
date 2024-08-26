@@ -77,3 +77,7 @@ managed_services = klipper
 enable_file_preprocessor = False
 enable_toolchange_next_pos = True
 
+[spoolman]
+server = http://10.0.0.10:7912
+sync_rate = 5
+
