@@ -54,6 +54,8 @@ declare -n mcu
 
 sudo service klipper stop
 
+mkdir -p $firmware_folder
+
 cd $klipper_folder
 git pull --autostash
 
